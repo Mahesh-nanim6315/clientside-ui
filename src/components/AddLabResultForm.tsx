@@ -7,9 +7,8 @@ import {
   InputLabel,
   Select,
   DialogActions,
-  Box,
 } from "@mui/material";
-import { Formik, Form, Field } from "formik";
+import { Formik, Field } from "formik";
 import { LabResultSchema } from "../validation/LabResultSchema";
 import axios from "axios";
 
@@ -42,9 +41,14 @@ export default function AddLabResultForm({ onClose, onSuccess }: Props) {
   };
 
   return (
-    <Formik initialValues={initialValues} validationSchema={LabResultSchema} onSubmit={handleSubmit}>
-      {({ values, errors, touched, handleChange }) => (
-        <Form>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={LabResultSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ values, errors, touched, handleChange, handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          {/* Patient Name */}
           <Field
             as={TextField}
             name="patient_name"
@@ -54,6 +58,8 @@ export default function AddLabResultForm({ onClose, onSuccess }: Props) {
             error={!!errors.patient_name && touched.patient_name}
             helperText={touched.patient_name && errors.patient_name}
           />
+
+          {/* Test Name */}
           <Field
             as={TextField}
             name="test_name"
@@ -63,6 +69,8 @@ export default function AddLabResultForm({ onClose, onSuccess }: Props) {
             error={!!errors.test_name && touched.test_name}
             helperText={touched.test_name && errors.test_name}
           />
+
+          {/* Result */}
           <Field
             as={TextField}
             name="result"
@@ -72,14 +80,27 @@ export default function AddLabResultForm({ onClose, onSuccess }: Props) {
             error={!!errors.result && touched.result}
             helperText={touched.result && errors.result}
           />
-          <FormControl fullWidth margin="dense" error={!!errors.status && touched.status}>
+
+          {/* Status */}
+          <FormControl
+            fullWidth
+            margin="dense"
+            error={!!errors.status && touched.status}
+          >
             <InputLabel>Status</InputLabel>
-            <Select name="status" value={values.status} onChange={handleChange}>
+            <Select
+              name="status"
+              value={values.status}
+              onChange={handleChange}
+              fullWidth
+            >
               <MenuItem value="Pending">Pending</MenuItem>
               <MenuItem value="Completed">Completed</MenuItem>
               <MenuItem value="Abnormal">Abnormal</MenuItem>
             </Select>
           </FormControl>
+
+          {/* Date */}
           <TextField
             name="date"
             type="date"
@@ -92,6 +113,8 @@ export default function AddLabResultForm({ onClose, onSuccess }: Props) {
             error={!!errors.date && touched.date}
             helperText={touched.date && errors.date}
           />
+
+          {/* Patient ID */}
           <Field
             as={TextField}
             name="patient_id"
@@ -101,6 +124,8 @@ export default function AddLabResultForm({ onClose, onSuccess }: Props) {
             error={!!errors.patient_id && touched.patient_id}
             helperText={touched.patient_id && errors.patient_id}
           />
+
+          {/* Doctor ID */}
           <Field
             as={TextField}
             name="doctor_id"
@@ -110,11 +135,15 @@ export default function AddLabResultForm({ onClose, onSuccess }: Props) {
             error={!!errors.doctor_id && touched.doctor_id}
             helperText={touched.doctor_id && errors.doctor_id}
           />
+
+          {/* Actions */}
           <DialogActions>
             <Button onClick={onClose}>Cancel</Button>
-            <Button type="submit" variant="contained">Submit</Button>
+            <Button type="submit" variant="contained">
+              Submit
+            </Button>
           </DialogActions>
-        </Form>
+        </form>
       )}
     </Formik>
   );

@@ -91,7 +91,7 @@ export default function AddDoctorDialog({ doctors, setDoctors }: Props) {
           onSubmit={handleSubmit}
         >
           {({ errors, touched, handleChange, values }) => (
-            <Form>
+            <form>
               <DialogTitle>Add Doctor</DialogTitle>
               <DialogContent dividers>
                 <Field
@@ -168,7 +168,7 @@ export default function AddDoctorDialog({ doctors, setDoctors }: Props) {
                   Submit
                 </Button>
               </DialogActions>
-            </Form>
+            </form>
           )}
         </Formik>
       </Dialog>

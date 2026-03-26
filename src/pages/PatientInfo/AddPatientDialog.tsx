@@ -90,7 +90,10 @@ export default function AddPatientDialog({ patients, setPatients, handleChange }
       <Dialog open={open} onClose={handleClose} TransitionComponent={Transition} maxWidth="xs" fullWidth>
         <Formik initialValues={initialValues} validationSchema={PatientSchema} onSubmit={handleSubmit}>
           {({ values, errors, touched, handleChange, setFieldValue }) => (
-            <Form>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              // The Formik's handleSubmit will be called automatically
+            }}>
               <DialogTitle>Add Patient</DialogTitle>
               <DialogContent dividers>
                 <Field
@@ -188,7 +191,7 @@ export default function AddPatientDialog({ patients, setPatients, handleChange }
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button type="submit" variant="contained">Submit</Button>
               </DialogActions>
-            </Form>
+            </form>
           )}
         </Formik>
       </Dialog>

@@ -115,7 +115,7 @@ const initialValues = patient
                    onSubmit={handleSubmit}
                 >
                   {({ errors, touched }) => (
-                    <Form>
+                    <form>
                       <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                           <Field
@@ -318,7 +318,7 @@ const initialValues = patient
                           </Button>
                         </Grid>
                       </Grid>
-                    </Form>
+                    </form>
                   )}
                 </Formik>
               </Grid>

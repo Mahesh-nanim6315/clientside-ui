@@ -1,12 +1,18 @@
 import React from "react";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
-  Button, Typography, Grid, TextField
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  Grid,
+  TextField,
 } from "@mui/material";
 import { MedicalRecord } from "../pages/MedicalRecords";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Formik, Form, Field, FieldArray } from "formik";
+import { Formik, Field, FieldArray } from "formik";
 import * as Yup from "yup";
 
 type Props = {
@@ -41,7 +47,11 @@ const PrescriptionSchema = Yup.object().shape({
   instructions: Yup.string().required("Instructions are required"),
 });
 
-export default function MedicalRecordModal({ open, onClose, record }: Props) {
+export default function MedicalRecordModal({
+  open,
+  onClose,
+  record,
+}: Props) {
   const navigate = useNavigate();
   if (!record) return null;
 
@@ -66,9 +76,13 @@ export default function MedicalRecordModal({ open, onClose, record }: Props) {
     };
 
     try {
-      await axios.post("http://localhost:5000/api/prescriptions", payload, {
-        withCredentials: true,
-      });
+      await axios.post(
+        "http://localhost:5000/api/prescriptions",
+        payload,
+        {
+          withCredentials: true,
+        }
+      );
       navigate("/prescriptions");
       alert("Prescription created successfully");
       onClose();
@@ -80,29 +94,54 @@ export default function MedicalRecordModal({ open, onClose, record }: Props) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>Medical Record Details</DialogTitle>
+
       <DialogContent dividers>
         <Grid container spacing={2} sx={{ mb: 2 }}>
           <Grid item xs={6}>
-            <Typography><strong>Patient:</strong> {record.patient_name}</Typography>
-            <Typography><strong>Doctor:</strong> {record.doctor_name}</Typography>
-            <Typography><strong>Date:</strong> {record.date}</Typography>
-            <Typography><strong>Status:</strong> {record.status}</Typography>
+            <Typography>
+              <strong>Patient:</strong> {record.patient_name}
+            </Typography>
+            <Typography>
+              <strong>Doctor:</strong> {record.doctor_name}
+            </Typography>
+            <Typography>
+              <strong>Date:</strong> {record.date}
+            </Typography>
+            <Typography>
+              <strong>Status:</strong> {record.status}
+            </Typography>
           </Grid>
+
           <Grid item xs={6}>
-            <Typography><strong>Diagnosis:</strong> {record.diagnosis}</Typography>
-            <Typography><strong>Medications:</strong> {record.medications}</Typography>
-            <Typography><strong>Instructions:</strong> {record.instructions}</Typography>
+            <Typography>
+              <strong>Diagnosis:</strong> {record.diagnosis}
+            </Typography>
+            <Typography>
+              <strong>Medications:</strong> {record.medications}
+            </Typography>
+            <Typography>
+              <strong>Instructions:</strong> {record.instructions}
+            </Typography>
           </Grid>
         </Grid>
 
-        <Formik initialValues={initialValues} validationSchema={PrescriptionSchema} onSubmit={handleSubmit}>
-          {({ values, errors, touched, handleChange }) => (
-            <Form>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={PrescriptionSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ values, errors, touched, handleChange, handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
               <FieldArray name="medications">
-                {({ push, remove }) => (
+                {({ push }) => (
                   <>
                     {values.medications.map((med, index) => (
-                      <Grid container spacing={2} key={index} sx={{ mb: 1 }}>
+                      <Grid
+                        container
+                        spacing={2}
+                        key={index}
+                        sx={{ mb: 1 }}
+                      >
                         <Grid item xs={4}>
                           <TextField
                             name={`medications[${index}].name`}
@@ -110,11 +149,23 @@ export default function MedicalRecordModal({ open, onClose, record }: Props) {
                             fullWidth
                             value={med.name}
                             onChange={handleChange}
-                           error={!!getFieldError(errors, touched, index, "name")}
-                           helperText={getFieldError(errors, touched, index, "name")}
-
+                            error={
+                              !!getFieldError(
+                                errors,
+                                touched,
+                                index,
+                                "name"
+                              )
+                            }
+                            helperText={getFieldError(
+                              errors,
+                              touched,
+                              index,
+                              "name"
+                            )}
                           />
                         </Grid>
+
                         <Grid item xs={4}>
                           <TextField
                             name={`medications[${index}].dosage`}
@@ -122,11 +173,23 @@ export default function MedicalRecordModal({ open, onClose, record }: Props) {
                             fullWidth
                             value={med.dosage}
                             onChange={handleChange}
-                           error={!!getFieldError(errors, touched, index, "dosage")}
-                           helperText={getFieldError(errors, touched, index, "dosage")}
-
+                            error={
+                              !!getFieldError(
+                                errors,
+                                touched,
+                                index,
+                                "dosage"
+                              )
+                            }
+                            helperText={getFieldError(
+                              errors,
+                              touched,
+                              index,
+                              "dosage"
+                            )}
                           />
                         </Grid>
+
                         <Grid item xs={4}>
                           <TextField
                             name={`medications[${index}].frequency`}
@@ -134,20 +197,37 @@ export default function MedicalRecordModal({ open, onClose, record }: Props) {
                             fullWidth
                             value={med.frequency}
                             onChange={handleChange}
-                            error={!!getFieldError(errors, touched, index, "frequency")}
-                            helperText={getFieldError(errors, touched, index, "frequency")}
+                            error={
+                              !!getFieldError(
+                                errors,
+                                touched,
+                                index,
+                                "frequency"
+                              )
+                            }
+                            helperText={getFieldError(
+                              errors,
+                              touched,
+                              index,
+                              "frequency"
+                            )}
                           />
                         </Grid>
                       </Grid>
                     ))}
-                    <Button onClick={() => push({ name: "", dosage: "", frequency: "" })}>
+
+                    <Button
+                      onClick={() =>
+                        push({ name: "", dosage: "", frequency: "" })
+                      }
+                    >
                       Add Medication
                     </Button>
                   </>
                 )}
               </FieldArray>
 
-            <Field
+              <Field
                 as={TextField}
                 name="instructions"
                 label="Instructions"
@@ -156,17 +236,22 @@ export default function MedicalRecordModal({ open, onClose, record }: Props) {
                 multiline
                 rows={3}
                 error={!!errors.instructions && touched.instructions}
-                helperText={touched.instructions && errors.instructions}
+                helperText={
+                  touched.instructions && errors.instructions
+                }
               />
-
 
               <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button type="submit" variant="contained" color="primary">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                >
                   Generate Prescription
                 </Button>
               </DialogActions>
-            </Form>
+            </form>
           )}
         </Formik>
       </DialogContent>
